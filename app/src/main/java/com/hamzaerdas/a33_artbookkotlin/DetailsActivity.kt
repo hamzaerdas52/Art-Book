@@ -73,9 +73,6 @@ class DetailsActivity : AppCompatActivity() {
             binding.button.visibility = View.VISIBLE
             binding.imageView.setImageResource(R.drawable.selectimage)
         }
-        else if (info.equals("delete")){
-
-        }
     }
 
     fun save(view: View){

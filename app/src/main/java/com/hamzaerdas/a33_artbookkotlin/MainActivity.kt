@@ -71,11 +71,6 @@ class MainActivity : AppCompatActivity() {
             intent.putExtra("info", "add")
             startActivity(intent)
         }
-        else if(item.itemId == R.id.delete_art_item){
-            val intent = Intent(this@MainActivity, DetailsActivity::class.java)
-            intent.putExtra("info", "delete")
-            startActivity(intent)
-        }
         return super.onOptionsItemSelected(item)
     }
 }
