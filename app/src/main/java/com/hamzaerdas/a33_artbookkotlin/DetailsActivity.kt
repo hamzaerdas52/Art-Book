@@ -107,6 +107,7 @@ class DetailsActivity : AppCompatActivity() {
             }
 
             val intent = Intent(this@DetailsActivity, MainActivity::class.java)
+            // Bundan önce açılmış tüm aktiviteleri kapatır.
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
@@ -145,12 +146,11 @@ class DetailsActivity : AppCompatActivity() {
     }
 
     fun delete(view: View){
-        val artName = binding.artNameText.text.toString()
 
         try {
-            val sqlString = "DELETE FROM arts WHERE artname = ?"
+            val sqlString = "DELETE FROM arts WHERE id = ?"
             val statement = database.compileStatement(sqlString)
-            statement.bindString(1, artName)
+            statement.bindString(1, selectedId.toString())
             statement.execute()
 
         } catch (e: Exception){
