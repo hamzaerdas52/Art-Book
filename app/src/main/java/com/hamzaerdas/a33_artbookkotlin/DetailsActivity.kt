@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.drawToBitmap
 import com.google.android.material.snackbar.Snackbar
 import com.hamzaerdas.a33_artbookkotlin.databinding.ActivityDetailsBinding
 import com.hamzaerdas.a33_artbookkotlin.databinding.ActivityMainBinding
@@ -31,6 +32,7 @@ class DetailsActivity : AppCompatActivity() {
     private lateinit var permissionLauncher : ActivityResultLauncher<String>
     var selectedBitmap : Bitmap? = null
     private lateinit var database: SQLiteDatabase
+    var selectedId : Int? = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,9 +47,9 @@ class DetailsActivity : AppCompatActivity() {
         val intent = intent
         val info = intent.getStringExtra("info")
         if(info.equals("old")){
-            binding.button.visibility = View.INVISIBLE
+            binding.save.visibility = View.INVISIBLE
 
-            val selectedId = intent.getIntExtra("id", 1)
+            selectedId = intent.getIntExtra("id", 1)
 
             val cursor = database.rawQuery("SELECT * FROM arts WHERE id = ?", arrayOf(selectedId.toString()))
             val artNameIx = cursor.getColumnIndex("artname")
@@ -70,7 +72,8 @@ class DetailsActivity : AppCompatActivity() {
             binding.artNameText.setText("")
             binding.artArtistName.setText("")
             binding.artYear.setText("")
-            binding.button.visibility = View.VISIBLE
+            binding.update.visibility = View.INVISIBLE
+            binding.delete.visibility = View.INVISIBLE
             binding.imageView.setImageResource(R.drawable.selectimage)
         }
     }
@@ -107,6 +110,57 @@ class DetailsActivity : AppCompatActivity() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
             startActivity(intent)
         }
+    }
+
+    fun update(view: View){
+
+        val artName = binding.artNameText.text.toString()
+        val artArtistName = binding.artArtistName.text.toString()
+        val artYear = binding.artYear.text.toString()
+        selectedBitmap = binding.imageView.drawToBitmap()
+
+        val smallBitmap = makeSmallerBitmap(selectedBitmap!!, 300)
+
+        val outputStream = ByteArrayOutputStream()
+        smallBitmap.compress(Bitmap.CompressFormat.PNG, 50, outputStream)
+        val byteArray = outputStream.toByteArray()
+
+        try {
+            val sqlString = "UPDATE arts SET artname = ?, artistname = ?, year = ?, image = ? WHERE id = ?"
+            val statement = database.compileStatement(sqlString)
+            statement.bindString(1, artName)
+            statement.bindString(2, artArtistName)
+            statement.bindString(3, artYear)
+            statement.bindBlob(4, byteArray)
+            statement.bindString(5, selectedId.toString())
+            statement.execute()
+
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        val intent = Intent(this@DetailsActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+    }
+
+    fun delete(view: View){
+        val artName = binding.artNameText.text.toString()
+
+        try {
+            val sqlString = "DELETE FROM arts WHERE artname = ?"
+            val statement = database.compileStatement(sqlString)
+            statement.bindString(1, artName)
+            statement.execute()
+
+        } catch (e: Exception){
+            e.printStackTrace()
+        }
+
+        val intent = Intent(this@DetailsActivity, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        startActivity(intent)
+
     }
 
     private fun makeSmallerBitmap(image: Bitmap, maximumSize: Int): Bitmap{

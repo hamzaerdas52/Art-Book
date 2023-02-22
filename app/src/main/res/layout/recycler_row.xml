@@ -5,44 +5,42 @@ android:id="@+id/singleRow"
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
 android:clickable="true">
-
-<androidx.cardview.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/card_view"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center"
-    android:layout_margin="10dp"
-    android:padding="5dp"
-    card_view:cardBackgroundColor="#fff"
-    card_view:cardCornerRadius="10dp"
-    card_view:cardElevation="20dp"
-    >
-
-    <LinearLayout
+    <androidx.cardview.widget.CardView
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_margin="10dp"
-        android:background="@android:color/white"
+        android:padding="5dp"
+        card_view:cardBackgroundColor="#fff"
+        card_view:cardCornerRadius="10dp"
+        card_view:cardElevation="20dp"
         >
-
-        <TextView
-            android:id="@+id/recyclerViewArtNameText"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="serif"
-            android:text="Test"
-            android:textSize="25sp"
-            android:textStyle="bold">
-        </TextView>
-        <TextView
-            android:id="@+id/recyclerViewArtArtistName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test"
-            android:textSize="25sp">
-        </TextView>
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:background="@android:color/white"
+            >
 
-    </LinearLayout>
-</androidx.cardview.widget.CardView>
+            <TextView
+                android:id="@+id/recyclerViewArtNameText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="serif"
+                android:text="Test"
+                android:textSize="25sp"
+                android:textStyle="bold">
+            </TextView>
+            <TextView
+                android:id="@+id/recyclerViewArtArtistName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:textSize="25sp">
+            </TextView>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>
